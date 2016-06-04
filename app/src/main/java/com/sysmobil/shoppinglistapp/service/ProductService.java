@@ -9,6 +9,11 @@ import java.util.List;
  */
 public interface ProductService {
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     List<Product> getAllProducts(int id);
     Product getProductById(int id);
     void addProduct(int shoppingListId, String name);
