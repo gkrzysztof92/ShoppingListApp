@@ -4,7 +4,6 @@ package com.sysmobil.shoppinglistapp.app;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,14 +11,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.sysmobil.productlistapp.R;
-import com.sysmobil.shoppinglistapp.adapters.TextTabsAdapter;
+import com.sysmobil.shoppinglistapp.adapters.TabsAdapter;
 import com.sysmobil.shoppinglistapp.database.DatabaseHelper;
 import com.sysmobil.shoppinglistapp.fragments.MyShoppingListFragment;
 import com.sysmobil.shoppinglistapp.fragments.PaidShoppingListFragment;
@@ -27,7 +23,7 @@ import com.sysmobil.shoppinglistapp.fragments.PaidShoppingListFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
     private Context context;
@@ -36,10 +32,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<String> titleList = new ArrayList<>();
 
     private ViewPager viewPager;
-    private TextTabsAdapter adapter;
+    private TabsAdapter adapter;
     private Toolbar toolbar;
     private TabLayout tabLayout;
-    private FloatingActionButton floatingActionButton;
+
     private CoordinatorLayout coordinatorLayout;
 
     @Override
@@ -54,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         
         prepareDataResource();
 
-        adapter = new TextTabsAdapter(getSupportFragmentManager(), fragmentList, titleList);
+        adapter = new TabsAdapter(getSupportFragmentManager(), fragmentList, titleList);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -64,11 +60,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         toolbar.setTitle("Shopping List App");
-        floatingActionButton.setOnClickListener(this);
+
 
     }
 
@@ -93,19 +89,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         snackbar.show();
     }
 
-    void undoAddShoppingList() {
 
-    }
-
-
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.fab:
-                Log.i("FAB CLICKED", "FAB CLICKED");
-                showSnackBar();
-        }
-
-    }
 }

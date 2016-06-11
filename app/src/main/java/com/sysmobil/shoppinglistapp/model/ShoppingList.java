@@ -1,5 +1,7 @@
 package com.sysmobil.shoppinglistapp.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -19,6 +21,9 @@ public class ShoppingList {
     public ShoppingList(int id, String shoppingListName) {
         this.id = id;
         this.shoppingListName = shoppingListName;
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = new Date();
+        this.creationDate = dateFormat.format(date);
     }
 
     public ShoppingList(int id, String shoppingListName, float payment, String creationDate, boolean isPaid) {
@@ -67,5 +72,16 @@ public class ShoppingList {
 
     public void setIsPaid(boolean isPaid) {
         this.isPaid = isPaid;
+    }
+
+    @Override
+    public String toString() {
+        return "ShoppingList{" +
+                "id=" + id +
+                ", shoppingListName='" + shoppingListName + '\'' +
+                ", payment=" + payment +
+                ", creationDate='" + creationDate + '\'' +
+                ", isPaid=" + isPaid +
+                '}';
     }
 }

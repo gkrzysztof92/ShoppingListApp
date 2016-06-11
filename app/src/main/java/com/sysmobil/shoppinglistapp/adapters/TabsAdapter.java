@@ -9,12 +9,12 @@ import java.util.List;
 /**
  * Created by krzgac on 2016-06-02.
  */
-public class TextTabsAdapter extends FragmentPagerAdapter {
+public class TabsAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragmentList;
     private List<String> titleList;
 
-    public TextTabsAdapter(FragmentManager fm, List<Fragment> fragmentList, List<String> titleList) {
+    public TabsAdapter(FragmentManager fm, List<Fragment> fragmentList, List<String> titleList) {
         super(fm);
         this.fragmentList = fragmentList;
         this.titleList = titleList;
