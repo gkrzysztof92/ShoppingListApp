@@ -1,11 +1,13 @@
 package com.sysmobil.shoppinglistapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sysmobil.productlistapp.R;
@@ -61,17 +63,17 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
 
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView title;
-        TextView creationDate;
+        TextView title, creationDate;
+        ImageView editImage, deleteImage;
         int position;
         ShoppingList current;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            System.out.println("##### " + R.id.shopping_list_name);
-            System.out.println("##### " + R.id.shopping_list_creation_date);
             this.title = (TextView) itemView.findViewById(R.id.shopping_list_name);
             this.creationDate = (TextView) itemView.findViewById(R.id.shopping_list_creation_date);
+            this.editImage = (ImageView) itemView.findViewById(R.id.sli_list_edit);
+            this.deleteImage = (ImageView) itemView.findViewById(R.id.sli_list_delete);
         }
 
         public void setData(ShoppingList currentObj, int pos) {
@@ -83,10 +85,26 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
         }
 
         public void setListeners() {
+            editImage.setOnClickListener(this);
+            deleteImage.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.sli_list_delete:
+                    System.out.println("Delete " + position);
+                    removeItem(position);
+                    break;
+                case R.id.sli_list_edit:
+                    System.out.println("Edit " + position);
+                    Intent intent = new Intent();
+                    break;
+                default:
+                    System.out.println("Default " + position);
+                    break;
+            }
+
 
         }
     }

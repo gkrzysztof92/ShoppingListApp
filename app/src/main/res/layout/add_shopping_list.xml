@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/asl_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="30dp"
+                    android:id="@+id/submitEditNote"
+                    android:src="@drawable/ic_done_white_36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"/>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="80dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/asl_input_layout_name"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/asl_input_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:hint="Nazwa Listy Zakupów" />
+            </android.support.design.widget.TextInputLayout>
+        <at.markushi.ui.CircleButton
+            android:id="@+id/asl_mic"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_mic_white_36dp"
+            app:cb_color="#99CC00"
+            app:cb_pressedRingWidth="8dip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="PRODUKTY NA LISCIE ZAKUPÓW"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/asl_recycler_wiever"
+        android:cacheColorHint="@android:color/transparent"
+        android:scrollbars="vertical"
+        android:layout_marginTop="200dp"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/asl_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_white_48dp"/>
+
+</android.support.design.widget.CoordinatorLayout>

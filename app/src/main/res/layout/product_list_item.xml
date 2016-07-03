@@ -26,8 +26,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/shopping_list_name"
-                android:layout_margin="5dp"
+                android:id="@+id/pli_name"
+                android:layout_margin="7dp"
                 android:text="Title"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
@@ -36,12 +36,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:id="@+id/shopping_list_creation_date"
+                android:layout_margin="7dp"
+                android:id="@+id/pli_quantity"
                 android:text="25-05-2016"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="italic"/>
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -49,27 +48,17 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="right|center">
+            android:orientation="vertical"
+            android:gravity="right">
 
             <ImageView
-                android:id="@+id/sli_list_edit"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="7dp"
-                android:contentDescription="delete_img"
-                android:src="@drawable/ic_mode_edit_black_24dp"
-                android:tint="@android:color/holo_blue_dark"/>
-
-            <ImageView
-                android:id="@+id/sli_list_delete"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:id="@+id/pli_list_delete"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_margin="7dp"
                 android:contentDescription="delete_img"
                 android:src="@drawable/ic_delete_black_24dp"
-                android:tint="@android:color/holo_red_dark"/>
-
+                android:tint="@android:color/holo_red_light"/>
 
         </LinearLayout>
 
