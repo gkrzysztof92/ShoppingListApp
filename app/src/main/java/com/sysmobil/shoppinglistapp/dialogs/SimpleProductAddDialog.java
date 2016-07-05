@@ -1,7 +1,10 @@
 package com.sysmobil.shoppinglistapp.dialogs;
 
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
@@ -11,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.sysmobil.productlistapp.R;
 import com.sysmobil.shoppinglistapp.app.AddShoppingListActivity;
@@ -18,10 +22,18 @@ import com.sysmobil.shoppinglistapp.listeners.ChangeProductListener;
 import com.sysmobil.shoppinglistapp.model.Product;
 import com.sysmobil.shoppinglistapp.utils.MyTextWatcher;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
+import at.markushi.ui.CircleButton;
+
 /**
  * Created by krzgac on 2016-07-03.
  */
 public class SimpleProductAddDialog extends DialogFragment implements View.OnClickListener {
+
+    public static final int REQ_CODE_SPEECH_INPUT = 100;
+    public static final int RESULT_OK           = -1;
 
     private EditText productNameInput, quantityInput;
     private TextInputLayout productNameLayoutinput, quantityLayoutInput;
@@ -30,6 +42,7 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
     private Product product;
     private int reqType;
     private ChangeProductListener changeProductListener;
+    private CircleButton microphoneButton1;
 
     public SimpleProductAddDialog() {
 
@@ -54,6 +67,8 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
         View view = inflater.inflate(R.layout.simple_add_product, container, false);
 
         getDialog().getWindow().setTitle("Add product");
+
+        microphoneButton1 = (CircleButton) view.findViewById(R.id.asl_mic);
 
         productNameInput = (EditText) view.findViewById(R.id.sap__product_name);
         quantityInput = (EditText) view.findViewById(R.id.sap_input_quantity);
@@ -132,8 +147,42 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
                 break;
             case R.id.sap_dismiss:
                 getDialog().dismiss();
+
+            case R.id.asl_mic:
+                System.out.println("Voice input");
+                promptSpeechinput();
+                break;
             default:
                 break;
         }
     }
+
+    private void promptSpeechinput() {
+
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Wprowadź głosowo nazwę listy zakupów");
+
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getContext(),"Wprowadzanie głosowe nie obsługiwane!",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT:
+                if (resultCode == RESULT_OK && data != null) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    productNameInput.setText(result.get(0));
+                }
+        }
+    }
+
 }
