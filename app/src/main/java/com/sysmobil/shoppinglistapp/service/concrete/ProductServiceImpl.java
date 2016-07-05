@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.sysmobil.shoppinglistapp.database.DatabaseHelper;
 import com.sysmobil.shoppinglistapp.database.ProductTable;
+import com.sysmobil.shoppinglistapp.database.ShoppingListTable;
 import com.sysmobil.shoppinglistapp.model.Product;
 import com.sysmobil.shoppinglistapp.service.ProductService;
 
@@ -88,6 +89,20 @@ public class ProductServiceImpl implements ProductService {
 
         db.update(ProductTable.TABLE_NAME, values, whereClause, whereArgs);
 
+    }
+
+    @Override
+    public int getNextFreeId() {
+
+        Cursor cursor = db.query(ProductTable.TABLE_NAME, new String[] {"MAX(_id)"}, null, null, null, null, null);
+        int id;
+        if (cursor != null) {
+            cursor.moveToFirst();
+            id = cursor.getInt(0);
+        } else {
+            id = 0;
+        }
+        return id;
     }
 
     @Override

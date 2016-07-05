@@ -92,8 +92,21 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
 
         this.shopingListName.setText(shoppingList.getShoppingListName());
         this.shoppingListPrice.setText("Do zapłacenia: ");
-        this.shoppingListCunter.setText("W koszyku: 5/" + productList.size() );
+        this.shoppingListCunter.setText("Produkty w koszyku: " + countPaidProducts() + "/" + productList.size() );
 
+    }
+
+    private int countPaidProducts() {
+
+        int sum = 0;
+
+        for (Product prod : productList) {
+
+            if (prod.isBought()) {
+                sum++;
+            }
+        }
+        return  sum;
     }
 
     @Override

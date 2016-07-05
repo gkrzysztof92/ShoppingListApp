@@ -25,8 +25,10 @@
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/ppli_check"
-                android:layout_gravity="center|center"/>
+                android:layout_gravity="center|center_vertical|center_horizontal"/>
 
         </LinearLayout>
 
@@ -34,7 +36,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -64,11 +67,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="7dp"
+                android:layout_margin="20dp"
                 android:id="@+id/ppli_price"
+                android:text="Cena: 0.00 zł"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:gravity="center|center_vertical"/>
+                />
 
         </LinearLayout>
 

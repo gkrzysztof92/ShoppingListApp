@@ -193,6 +193,8 @@ public class AddShoppingListActivity extends AppCompatActivity implements View.O
                     dialog.setChangeProductListener(new ChangeProductListener() {
                     @Override
                     public void onReturnValue(Product product) {
+                        int id = productService.getNextFreeId() + 1;
+                        product.setId(id);
                         addProductToDb(product);
                     }
                 });

@@ -17,11 +17,11 @@ public class ProductTable {
     public static final String QUANTITY_COLUMN = "QUANTITY";
 
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " ( "
-            + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + ID_COLUMN + " integer primary key autoincrement, "
             + PRODUCT_NAME_COLUMN + " TEXT NOT NULL, "
             + SHOPPING_LIST_ID_COLUMN + " INTEGER REFERENCES "
             + ShoppingListTable.TABLE_NAME + "(" + ShoppingListTable.ID_COLUMN + "), "
-            + CREATION_DATE_COLUMN + " TEXT NOT NULL, "
+            + CREATION_DATE_COLUMN + " TEXT, "
             + PRODUCT_PRICE_COLUMN + " NUMERIC, "
             + PRODUCT_BARCODE_COLUMN + " TEXT, "
             + IS_BOUGHT_COLUMN + " TEXT, "
