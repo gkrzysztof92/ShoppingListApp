@@ -145,7 +145,7 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
 
         float sum = 0;
         for (Product prod : productList) {
-                sum += prod.getProductPrice();
+                sum += prod.getProductPrice() * prod.getQuantity();
         }
         return  sum;
     }
@@ -154,6 +154,9 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.psl_submitEditNote:
+                shoppingList.setPayment(calculatePayment());
+                shoppingList.setIsPaid(true);
+                shoppingListService.updateShoppingList(shoppingList);
                 setResult(RESULT_OK);
                 finish();
         }
