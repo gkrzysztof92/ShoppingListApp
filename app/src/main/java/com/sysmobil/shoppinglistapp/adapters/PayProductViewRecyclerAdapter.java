@@ -22,7 +22,7 @@ public class PayProductViewRecyclerAdapter extends RecyclerView.Adapter<PayProdu
     private List<Product> productList;
     private LayoutInflater layoutInflater;
 
-    private ChangeProductListener editProductListener, deleteProductListener;
+    private ChangeProductListener editProductListener;
 
     public PayProductViewRecyclerAdapter(List<Product> productList, Context context) {
         this.productList = productList;
@@ -71,6 +71,7 @@ public class PayProductViewRecyclerAdapter extends RecyclerView.Adapter<PayProdu
         notifyItemRangeChanged(position, productList.size());
     }
 
+
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView productName, quantity, price;
@@ -91,13 +92,20 @@ public class PayProductViewRecyclerAdapter extends RecyclerView.Adapter<PayProdu
             this.position = position;
             productName.setText(current.getProductName());
             quantity.setText("Ilość: " + current.getQuantity());
+            price.setText("Cena: " + Float.toString(current.getProductPrice()) + "zł");
+            if(current.getProductPrice() > 0) {
+                checkBox.setChecked(true);
+            }
         }
 
         public void setListeners() {
+            checkBox.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            editProductListener.onReturnValue(current);
+            checkBox.setChecked(true);
         }
 
     }

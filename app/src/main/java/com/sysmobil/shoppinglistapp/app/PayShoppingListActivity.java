@@ -2,11 +2,13 @@ package com.sysmobil.shoppinglistapp.app;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,7 +16,10 @@ import android.widget.TextView;
 import com.sysmobil.productlistapp.R;
 import com.sysmobil.shoppinglistapp.adapters.PayProductViewRecyclerAdapter;
 import com.sysmobil.shoppinglistapp.database.DatabaseHelper;
+import com.sysmobil.shoppinglistapp.dialogs.ExtendedProductAddDialog;
+import com.sysmobil.shoppinglistapp.dialogs.SimpleProductAddDialog;
 import com.sysmobil.shoppinglistapp.fragments.MyShoppingListFragment;
+import com.sysmobil.shoppinglistapp.listeners.ChangeProductListener;
 import com.sysmobil.shoppinglistapp.model.Product;
 import com.sysmobil.shoppinglistapp.model.ShoppingList;
 import com.sysmobil.shoppinglistapp.service.ProductService;
@@ -68,10 +73,9 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
 
         shoppingList = shoppingListService.getShoppingListById(shoppingListId);
         productList = productService.getAllProducts(shoppingListId);
-
         setUpRecyclerViewer(productList);
+        SetListenersInAdapters();
         setDataForTextViews();
-
     }
 
     private void setUpRecyclerViewer(List<Product> shoppingLists) {
@@ -88,10 +92,39 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
 
     }
 
+    private void SetListenersInAdapters() {
+
+        adapter.setEditProductListener(new ChangeProductListener() {
+            @Override
+            public void onReturnValue(Product product) {
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                ExtendedProductAddDialog dialog = new ExtendedProductAddDialog();
+                System.out.println("$$$ Product id: " + product.getId());
+                dialog.setProduct(product);
+                dialog.setChangeProductListener(new ChangeProductListener() {
+                    @Override
+                    public void onReturnValue(Product product) {
+                        Log.i(getLocalClassName(), "Update produktu o id: " + product.getId());
+                        product.setIsBought(true);
+                        productService.updateProduct(product);
+                        System.out.println("update productu: " + product.getProductPrice() + " " + product.getProductShoppingListId());
+                        productList = productService.getAllProducts(product.getProductShoppingListId());
+                        adapter.refreshProductList(productList);
+                        setDataForTextViews();
+                    }
+                });
+                dialog.show(fragmentManager, "Fragment");
+
+            }
+        });
+
+    }
+
     private void setDataForTextViews() {
 
         this.shopingListName.setText(shoppingList.getShoppingListName());
-        this.shoppingListPrice.setText("Do zapłacenia: ");
+        this.shoppingListPrice.setText("Do zapłacenia: " + calculatePayment() + "zł");
         this.shoppingListCunter.setText("Produkty w koszyku: " + countPaidProducts() + "/" + productList.size() );
 
     }
@@ -99,12 +132,20 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
     private int countPaidProducts() {
 
         int sum = 0;
-
         for (Product prod : productList) {
 
-            if (prod.isBought()) {
+            if (prod.getProductPrice() > 0) {
                 sum++;
             }
+        }
+        return  sum;
+    }
+
+    private float calculatePayment() {
+
+        float sum = 0;
+        for (Product prod : productList) {
+                sum += prod.getProductPrice();
         }
         return  sum;
     }

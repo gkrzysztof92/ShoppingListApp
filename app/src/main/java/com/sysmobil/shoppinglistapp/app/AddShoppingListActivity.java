@@ -237,8 +237,9 @@ public class AddShoppingListActivity extends AppCompatActivity implements View.O
                     @Override
                     public void onReturnValue(Product product) {
                         Log.i(getLocalClassName(), "Update produktu o id: " + product.getId());
+                        product.setId(productShopingId);
                         productService.updateProduct(product);
-                        System.out.println("update productu: " + product.getProductName() + " " + product.getId());
+                        System.out.println("update productu: " + product.getProductName() + " " + productShopingId);
                         adapter.refreshProductList(productService.getAllProducts(productShopingId));
                     }
                 });

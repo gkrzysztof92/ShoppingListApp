@@ -23,7 +23,9 @@ import com.sysmobil.shoppinglistapp.app.PayShoppingListActivity;
 import com.sysmobil.shoppinglistapp.database.DatabaseHelper;
 import com.sysmobil.shoppinglistapp.listeners.ChangeShoppingListListener;
 import com.sysmobil.shoppinglistapp.model.ShoppingList;
+import com.sysmobil.shoppinglistapp.service.ProductService;
 import com.sysmobil.shoppinglistapp.service.ShoppingListService;
+import com.sysmobil.shoppinglistapp.service.concrete.ProductServiceImpl;
 import com.sysmobil.shoppinglistapp.service.concrete.ShoppingListServiceImpl;
 
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public class MyShoppingListFragment extends Fragment implements View.OnClickList
     RecyclerView recyclerView;
     ShoppingListRecyclerAdapter adapter;
     ShoppingListService shoppingListService;
+    ProductService productService;
 
     public MyShoppingListFragment() {
         Log.i("Fragment Check", "Fragment MyShoppingList Created");
@@ -59,6 +62,7 @@ public class MyShoppingListFragment extends Fragment implements View.OnClickList
         setUpRecyclerViewer(view);
         setRecyclerViewerListeners();
         shoppingListService = new ShoppingListServiceImpl(DatabaseHelper.getInstance(getContext()));
+        productService = new ProductServiceImpl(DatabaseHelper.getInstance(getContext()));
         return view;
     }
 
@@ -82,6 +86,7 @@ public class MyShoppingListFragment extends Fragment implements View.OnClickList
             @Override
             public void onChangeShoppingListListener(ShoppingList shoppingList) {
                 shoppingListService.deleteShoppingList(shoppingList);
+                productService.deleteProductsByShoppingListId(shoppingList.getId());
             }
         });
 

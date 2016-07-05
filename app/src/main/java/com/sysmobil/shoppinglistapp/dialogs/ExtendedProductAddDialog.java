@@ -30,13 +30,13 @@ import at.markushi.ui.CircleButton;
 /**
  * Created by krzgac on 2016-07-03.
  */
-public class SimpleProductAddDialog extends DialogFragment implements View.OnClickListener {
+public class ExtendedProductAddDialog extends DialogFragment implements View.OnClickListener {
 
     public static final int REQ_CODE_SPEECH_INPUT = 100;
     public static final int RESULT_OK           = -1;
 
-    private EditText productNameInput, quantityInput;
-    private TextInputLayout productNameLayoutinput, quantityLayoutInput;
+    private EditText productNameInput, quantityInput, priceInput;
+    private TextInputLayout productNameLayoutinput, quantityLayoutInput, priceLayoutInput;
     private Button okButton, dismissbutton;
 
     private Product product;
@@ -44,7 +44,7 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
     private ChangeProductListener changeProductListener;
     private CircleButton microphoneButton1;
 
-    public SimpleProductAddDialog() {
+    public ExtendedProductAddDialog() {
 
     }
 
@@ -64,29 +64,32 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View view = inflater.inflate(R.layout.simple_add_product, container, false);
+        View view = inflater.inflate(R.layout.extended_add_product, container, false);
 
         getDialog().getWindow().setTitle("Add product");
 
-        microphoneButton1 = (CircleButton) view.findViewById(R.id.sap_mic);
+        microphoneButton1 = (CircleButton) view.findViewById(R.id.eap_mic);
 
-        productNameInput = (EditText) view.findViewById(R.id.sap__product_name);
-        quantityInput = (EditText) view.findViewById(R.id.sap_input_quantity);
-
+        productNameInput = (EditText) view.findViewById(R.id.eap_product_name);
+        quantityInput = (EditText) view.findViewById(R.id.eap_input_quantity);
+        priceInput = (EditText) view.findViewById(R.id.eap_input_price) ;
         productNameInput.addTextChangedListener(new MyTextWatcher(productNameInput));
 
-        productNameLayoutinput = (TextInputLayout) view.findViewById(R.id.sap_input_layout_product_name);
-        quantityLayoutInput = (TextInputLayout) view.findViewById(R.id.sap_input_layout_quantity);
+        priceLayoutInput = (TextInputLayout) view.findViewById(R.id.eap_layout_input_price);
+        productNameLayoutinput = (TextInputLayout) view.findViewById(R.id.eap_input_layout_product_name);
+        quantityLayoutInput = (TextInputLayout) view.findViewById(R.id.eap_input_layout_quantity);
 
-        okButton = (Button) view.findViewById(R.id.sap_add_product);
-        dismissbutton = (Button) view.findViewById(R.id.sap_dismiss);
+        okButton = (Button) view.findViewById(R.id.eap_add_product);
+        dismissbutton = (Button) view.findViewById(R.id.eap_dismiss);
 
         okButton.setOnClickListener(this);
         dismissbutton.setOnClickListener(this);
 
-        if(reqType == AddShoppingListActivity.REQ_CODE_EDIT_PRODUCT) {
-            productNameInput.setText(product.getProductName());
-            quantityInput.setText(Integer.toString(product.getQuantity()));
+        productNameInput.setText(product.getProductName());
+        quantityInput.setText(Integer.toString(product.getQuantity()));
+
+        if(product.getProductPrice() > 0) {
+            priceInput.setText(Float.toString(product.getProductPrice()));
         }
 
         return view;
@@ -136,21 +139,20 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.sap_add_product:
+            case R.id.eap_add_product:
                 if (validateProductName() && validateQuantity()) {
-                    Product product = new Product();
                     product.setProductName(productNameInput.getText().toString());
                     product.setQuantity(Integer.parseInt(quantityInput.getText().toString()));
-
+                    product.setProductPrice(Float.parseFloat(priceInput.getText().toString()));
                     changeProductListener.onReturnValue(product);
                     getDialog().dismiss();
                 }
                 break;
-            case R.id.sap_dismiss:
+            case R.id.eap_dismiss:
                 getDialog().dismiss();
 
-            case R.id.sap_mic:
-                System.out.println("Voice input from sap");
+            case R.id.eap_mic:
+                System.out.println("Voice input");
                 //promptSpeechinput();
                 break;
             default:
@@ -168,10 +170,9 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
         try {
             startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getDialog().getWindow().getContext(),"Wprowadzanie głosowe nie obsługiwane!",
+            Toast.makeText(getContext(),"Wprowadzanie głosowe nie obsługiwane!",
                     Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override

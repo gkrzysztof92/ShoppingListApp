@@ -14,6 +14,7 @@ public class Product {
     private int quantity;
     private String creationDate;
     private boolean isBought;
+    private int productShoppingListId;
 
     public Product() {
     }
@@ -34,6 +35,14 @@ public class Product {
         this.quantity = quantity;
         this.creationDate = creationDate;
         this.isBought = isBought;
+    }
+
+    public void setProductShoppingListId (int productShoppingListId) {
+        this.productShoppingListId = productShoppingListId;
+    }
+
+    public int getProductShoppingListId() {
+        return productShoppingListId;
     }
 
     public int getId() {

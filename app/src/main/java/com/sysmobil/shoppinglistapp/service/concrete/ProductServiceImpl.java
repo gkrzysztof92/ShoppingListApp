@@ -74,6 +74,7 @@ public class ProductServiceImpl implements ProductService {
         }
         values.put(ProductTable.CREATION_DATE_COLUMN, product.getCreationDate());
         values.put(ProductTable.QUANTITY_COLUMN, product.getQuantity());
+        values.put(ProductTable.PRODUCT_PRICE_COLUMN, 0.00);
 
         db.insert(ProductTable.TABLE_NAME, null, values);
 
@@ -112,6 +113,14 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    @Override
+    public void deleteProductsByShoppingListId(int id) {
+
+        db.delete(ProductTable.TABLE_NAME, ProductTable.SHOPPING_LIST_ID_COLUMN + "=" + id, null);
+
+    }
+
+
     private void prepareSendObject(Product product, Cursor cursor) {
 
         product.setId(cursor.getInt(cursor.getColumnIndexOrThrow(ProductTable.ID_COLUMN)));
@@ -121,6 +130,7 @@ public class ProductServiceImpl implements ProductService {
         product.setProductPrice(cursor.getFloat(cursor.getColumnIndexOrThrow(ProductTable.PRODUCT_PRICE_COLUMN)));
         product.setQuantity(cursor.getInt(cursor.getColumnIndexOrThrow(ProductTable.QUANTITY_COLUMN)));
         product.setIsBought((cursor.getString(cursor.getColumnIndexOrThrow(ProductTable.IS_BOUGHT_COLUMN))).equals("Y") ? true : false);
+        product.setProductShoppingListId(cursor.getInt(cursor.getColumnIndexOrThrow(ProductTable.SHOPPING_LIST_ID_COLUMN)));
     }
 
     private ContentValues prepareData(Product product) {
@@ -132,6 +142,7 @@ public class ProductServiceImpl implements ProductService {
         values.put(ProductTable.PRODUCT_PRICE_COLUMN, product.getProductPrice());
         values.put(ProductTable.IS_BOUGHT_COLUMN, product.isBought());
         values.put(ProductTable.QUANTITY_COLUMN, product.getQuantity());
+        values.put(ProductTable.SHOPPING_LIST_ID_COLUMN, product.getProductShoppingListId());
         return values;
     }
 
