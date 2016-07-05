@@ -8,14 +8,13 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.sysmobil.productlistapp.R;
-import com.sysmobil.shoppinglistapp.listeners.ProductDialogListener;
+import com.sysmobil.shoppinglistapp.app.AddShoppingListActivity;
+import com.sysmobil.shoppinglistapp.listeners.ChangeProductListener;
 import com.sysmobil.shoppinglistapp.model.Product;
 import com.sysmobil.shoppinglistapp.utils.MyTextWatcher;
 
@@ -28,14 +27,24 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
     private TextInputLayout productNameLayoutinput, quantityLayoutInput;
     private Button okButton, dismissbutton;
 
-    private ProductDialogListener productDialogListener;
+    private Product product;
+    private int reqType;
+    private ChangeProductListener changeProductListener;
 
     public SimpleProductAddDialog() {
 
     }
 
-    public void setProductDialogListener(ProductDialogListener productDialogListener) {
-        this.productDialogListener = productDialogListener;
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setReqType(int reqType) {
+        this.reqType = reqType;
+    }
+
+    public void setChangeProductListener(ChangeProductListener changeProductListener) {
+        this.changeProductListener = changeProductListener;
     }
 
     @Override
@@ -60,14 +69,41 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
         okButton.setOnClickListener(this);
         dismissbutton.setOnClickListener(this);
 
+        if(reqType == AddShoppingListActivity.REQ_CODE_EDIT_PRODUCT) {
+            productNameInput.setText(product.getProductName());
+            quantityInput.setText(Integer.toString(product.getQuantity()));
+        }
 
         return view;
     }
 
     private boolean validateProductName() {
         if (productNameInput.getText().toString().trim().isEmpty()) {
-            productNameLayoutinput.setError("Shopping list name is empty");
+            productNameLayoutinput.setError("Nazwa produktu mui być podana!");
             requestFocus(productNameLayoutinput);
+            return false;
+        } else {
+            productNameLayoutinput.setErrorEnabled(false);
+        }
+        return true;
+    }
+
+    private boolean validateQuantity() {
+        int quantity;
+        try {
+            quantity = Integer.parseInt(quantityInput.getText().toString().trim());
+        } catch (Exception e) {
+            quantity = 0;
+            quantityLayoutInput.setError("Wprowadzona wartość nie jest liczbą!");
+            requestFocus(quantityLayoutInput);
+        }
+        if (quantityInput.getText().toString().trim().isEmpty()) {
+            quantityLayoutInput.setError("Ilość musi być podana!");
+            requestFocus(quantityLayoutInput);
+            return false;
+        } else if (quantity < 1) {
+            quantityLayoutInput.setError("Wprowadzona wartość musi być większa od 0!");
+            requestFocus(quantityLayoutInput);
             return false;
         } else {
             productNameLayoutinput.setErrorEnabled(false);
@@ -86,11 +122,11 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sap_add_product:
-                if (validateProductName()) {
+                if (validateProductName() && validateQuantity()) {
                     Product product = new Product();
                     product.setProductName(productNameInput.getText().toString());
                     product.setQuantity(Integer.parseInt(quantityInput.getText().toString()));
-                    productDialogListener.onReturnValue(product);
+                    changeProductListener.onReturnValue(product);
                     getDialog().dismiss();
                 }
                 break;

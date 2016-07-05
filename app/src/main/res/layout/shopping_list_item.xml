@@ -53,6 +53,13 @@
             android:gravity="right|center">
 
             <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/sli_pay"
+                android:src="@drawable/ic_shopping_cart_black_36dp"
+                android:tint="@android:color/holo_green_light"/>
+
+            <ImageView
                 android:id="@+id/sli_list_edit"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -69,7 +76,6 @@
                 android:contentDescription="delete_img"
                 android:src="@drawable/ic_delete_black_24dp"
                 android:tint="@android:color/holo_red_dark"/>
-
 
         </LinearLayout>
 

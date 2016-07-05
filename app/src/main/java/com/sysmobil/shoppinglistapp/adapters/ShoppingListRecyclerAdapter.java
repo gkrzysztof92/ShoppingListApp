@@ -1,8 +1,6 @@
 package com.sysmobil.shoppinglistapp.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sysmobil.productlistapp.R;
+import com.sysmobil.shoppinglistapp.database.DatabaseHelper;
+import com.sysmobil.shoppinglistapp.listeners.ChangeShoppingListListener;
 import com.sysmobil.shoppinglistapp.model.ShoppingList;
+import com.sysmobil.shoppinglistapp.service.ShoppingListService;
+import com.sysmobil.shoppinglistapp.service.concrete.ShoppingListServiceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,10 +25,32 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
 
     private List<ShoppingList> shoppingListData;
     private LayoutInflater layoutInflater;
+    private ChangeShoppingListListener onDeleteShoppingList, onEditShoppingList, onPayShoppingList;
+    private ShoppingListService shoppingListService;
 
-    public ShoppingListRecyclerAdapter(List<ShoppingList> shoppingListData, Context context) {
-        this.shoppingListData = shoppingListData;
+
+    public ShoppingListRecyclerAdapter(Context context) {
         this.layoutInflater = LayoutInflater.from(context);
+        shoppingListService = new ShoppingListServiceImpl(DatabaseHelper.getInstance(context));
+        this.shoppingListData = new ArrayList<>();
+        this.shoppingListData = shoppingListService.getAllShoppingList();
+    }
+
+    public void setOnDeleteShoppingList(ChangeShoppingListListener onDeleteProduct) {
+        this.onDeleteShoppingList = onDeleteProduct;
+    }
+
+    public void setOnEditShoppingList(ChangeShoppingListListener onEditProduct) {
+        this.onEditShoppingList = onEditProduct;
+    }
+
+    public void setOnPayShoppingList(ChangeShoppingListListener onPayShoppingList) {
+        this.onPayShoppingList = onPayShoppingList;
+    }
+
+    public void updateOnChangeShoppingList() {
+        this.shoppingListData = shoppingListService.getAllShoppingList();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -64,7 +89,7 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView title, creationDate;
-        ImageView editImage, deleteImage;
+        ImageView editImage, deleteImage, payImage;
         int position;
         ShoppingList current;
 
@@ -74,6 +99,7 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
             this.creationDate = (TextView) itemView.findViewById(R.id.shopping_list_creation_date);
             this.editImage = (ImageView) itemView.findViewById(R.id.sli_list_edit);
             this.deleteImage = (ImageView) itemView.findViewById(R.id.sli_list_delete);
+            this.payImage = (ImageView) itemView.findViewById(R.id.sli_pay);
         }
 
         public void setData(ShoppingList currentObj, int pos) {
@@ -87,6 +113,7 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
         public void setListeners() {
             editImage.setOnClickListener(this);
             deleteImage.setOnClickListener(this);
+            payImage.setOnClickListener(this);
         }
 
         @Override
@@ -94,12 +121,15 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
             switch (v.getId()) {
                 case R.id.sli_list_delete:
                     System.out.println("Delete " + position);
-                    removeItem(position);
+                    onDeleteShoppingList.onChangeShoppingListListener(current);
+                    updateOnChangeShoppingList();
                     break;
                 case R.id.sli_list_edit:
                     System.out.println("Edit " + position);
-                    Intent intent = new Intent();
+                    onEditShoppingList.onChangeShoppingListListener(current);
                     break;
+                case R.id.sli_pay:
+                    onPayShoppingList.onChangeShoppingListListener(current);
                 default:
                     System.out.println("Default " + position);
                     break;

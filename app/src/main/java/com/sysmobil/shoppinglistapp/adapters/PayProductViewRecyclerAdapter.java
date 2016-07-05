@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.sysmobil.productlistapp.R;
@@ -17,21 +17,21 @@ import java.util.List;
 /**
  * Created by krzgac on 2016-07-02.
  */
-public class ProductViewRecyclerAdapter extends RecyclerView.Adapter<ProductViewRecyclerAdapter.MyViewHolder> {
+public class PayProductViewRecyclerAdapter extends RecyclerView.Adapter<PayProductViewRecyclerAdapter.MyViewHolder> {
 
     private List<Product> productList;
     private LayoutInflater layoutInflater;
 
     private ChangeProductListener editProductListener, deleteProductListener;
 
-    public ProductViewRecyclerAdapter(List<Product> productList, Context context) {
+    public PayProductViewRecyclerAdapter(List<Product> productList, Context context) {
         this.productList = productList;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.product_list_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.paid_product_list_item, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }
@@ -64,10 +64,6 @@ public class ProductViewRecyclerAdapter extends RecyclerView.Adapter<ProductView
         this.editProductListener = editProductListener;
     }
 
-    public void setDeleteProductListener(ChangeProductListener deleteProductListener) {
-        this.deleteProductListener = deleteProductListener;
-    }
-
     public void addItem(Product product) {
         int position = productList.size();
         productList.add(position, product);
@@ -77,17 +73,17 @@ public class ProductViewRecyclerAdapter extends RecyclerView.Adapter<ProductView
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView productName, quantity;
-        ImageView editProduct, deleteProduct;
+        TextView productName, quantity, price;
+        CheckBox checkBox;
         int position;
         Product current;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            productName = (TextView) itemView.findViewById(R.id.pli_name);
-            quantity = (TextView) itemView.findViewById(R.id.pli_quantity);
-            editProduct = (ImageView) itemView.findViewById(R.id.pli_product_edit);
-            deleteProduct = (ImageView) itemView.findViewById(R.id.pli_product_delete);
+            productName = (TextView) itemView.findViewById(R.id.ppli_name);
+            quantity = (TextView) itemView.findViewById(R.id.ppli_quantity);
+            price = (TextView) itemView.findViewById(R.id.ppli_price);
+            checkBox = (CheckBox) itemView.findViewById(R.id.ppli_check);
         }
 
         public void setData(Product currentObj, int position) {
@@ -98,23 +94,11 @@ public class ProductViewRecyclerAdapter extends RecyclerView.Adapter<ProductView
         }
 
         public void setListeners() {
-            editProduct.setOnClickListener(this);
-            deleteProduct.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.pli_product_delete:
-                    deleteProductListener.onReturnValue(current);
-                    System.out.println("Delete product");
-                    break;
-                case R.id.pli_product_edit:
-                    editProductListener.onReturnValue(current);
-                    break;
-                default:
-                    break;
-            }
         }
+
     }
 }

@@ -91,4 +91,17 @@ public class Product {
     public void setIsBought(boolean isBought) {
         this.isBought = isBought;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", productPrice=" + productPrice +
+                ", productBarcode='" + productBarcode + '\'' +
+                ", quantity=" + quantity +
+                ", creationDate='" + creationDate + '\'' +
+                ", isBought=" + isBought +
+                '}';
+    }
 }

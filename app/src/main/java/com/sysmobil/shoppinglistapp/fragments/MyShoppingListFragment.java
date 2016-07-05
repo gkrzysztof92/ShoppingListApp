@@ -19,7 +19,12 @@ import com.sysmobil.productlistapp.R;
 import com.sysmobil.shoppinglistapp.adapters.ShoppingListRecyclerAdapter;
 import com.sysmobil.shoppinglistapp.app.AddShoppingListActivity;
 import com.sysmobil.shoppinglistapp.app.MainActivity;
+import com.sysmobil.shoppinglistapp.app.PayShoppingListActivity;
+import com.sysmobil.shoppinglistapp.database.DatabaseHelper;
+import com.sysmobil.shoppinglistapp.listeners.ChangeShoppingListListener;
 import com.sysmobil.shoppinglistapp.model.ShoppingList;
+import com.sysmobil.shoppinglistapp.service.ShoppingListService;
+import com.sysmobil.shoppinglistapp.service.concrete.ShoppingListServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +37,14 @@ public class MyShoppingListFragment extends Fragment implements View.OnClickList
     final static String TAG = "MyShoppingListFragment";
     public static final int REQ_SHOPPING_LIST_ADD = 102;
     public static final int REQ_SHOPPING_LIST_EDIT = 103;
-    public static final String REQ_TYPE = "req_type";
+    public static final int REQ_PAY_SHOPPING_LIST = 104;
+    public static final String REQ_TYPE = "REQ_TYPE";
+    public static final String PASSING_ID = "ID";
 
     private FloatingActionButton floatingActionButton;
     RecyclerView recyclerView;
     ShoppingListRecyclerAdapter adapter;
+    ShoppingListService shoppingListService;
 
     public MyShoppingListFragment() {
         Log.i("Fragment Check", "Fragment MyShoppingList Created");
@@ -48,41 +56,17 @@ public class MyShoppingListFragment extends Fragment implements View.OnClickList
         View view = inflater.inflate(R.layout.my_shopping_list_fragment, container, false);
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(this);
-        System.out.println("##### Set up database data");
-        setUpRecyclerViewer(view, getDataFromDb());
-
+        setUpRecyclerViewer(view);
+        setRecyclerViewerListeners();
+        shoppingListService = new ShoppingListServiceImpl(DatabaseHelper.getInstance(getContext()));
         return view;
     }
 
-    private List<ShoppingList> getDataFromDb() {
-        List<ShoppingList> shoppingLists = new ArrayList<>();
-        ShoppingList sp1 = new ShoppingList(1, "MyList1");
-        System.out.println("##### " + sp1);
-        shoppingLists.add(sp1);
-        ShoppingList sp2 = new ShoppingList(1, "MyList2");
-        System.out.println("##### " + sp2);
-        shoppingLists.add(sp2);
-        ShoppingList sp3 = new ShoppingList(1, "MyList3");
-        System.out.println("##### " + sp3);
-        shoppingLists.add(sp3);
-        shoppingLists.add(new ShoppingList(2, "MyList4"));
-        ShoppingList sp4 = new ShoppingList(1, "MyList1");
-        System.out.println("##### " + sp1);
-        shoppingLists.add(sp4);
-        ShoppingList sp5 = new ShoppingList(1, "MyList2");
-        System.out.println("##### " + sp2);
-        shoppingLists.add(sp5);
-        ShoppingList sp6 = new ShoppingList(1, "MyList3");
-        System.out.println("##### " + sp6);
-        shoppingLists.add(sp6);
-        shoppingLists.add(new ShoppingList(2, "MyList4"));
-        return shoppingLists;
-    }
 
-    private void setUpRecyclerViewer(View view, List<ShoppingList> shoppingLists) {
+    private void setUpRecyclerViewer(View view) {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.mslRecyclerView);
-        adapter = new ShoppingListRecyclerAdapter(shoppingLists, this.getContext());
+        adapter = new ShoppingListRecyclerAdapter(this.getContext());
         recyclerView.setAdapter(adapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
@@ -92,22 +76,55 @@ public class MyShoppingListFragment extends Fragment implements View.OnClickList
         recyclerView.setItemAnimator(new DefaultItemAnimator());
      }
 
+    void setRecyclerViewerListeners() {
+
+        adapter.setOnDeleteShoppingList(new ChangeShoppingListListener() {
+            @Override
+            public void onChangeShoppingListListener(ShoppingList shoppingList) {
+                shoppingListService.deleteShoppingList(shoppingList);
+            }
+        });
+
+        adapter.setOnEditShoppingList(new ChangeShoppingListListener() {
+            @Override
+            public void onChangeShoppingListListener(ShoppingList shoppingList) {
+                Intent intent = new Intent(getContext(), AddShoppingListActivity.class);
+                intent.putExtra(REQ_TYPE,  REQ_SHOPPING_LIST_EDIT);
+                intent.putExtra(PASSING_ID, shoppingList.getId());
+                startActivityForResult(intent, REQ_SHOPPING_LIST_EDIT);
+            }
+        });
+
+        adapter.setOnPayShoppingList(new ChangeShoppingListListener() {
+            @Override
+            public void onChangeShoppingListListener(ShoppingList shoppingList) {
+                Intent intent = new Intent(getContext(), PayShoppingListActivity.class);
+                intent.putExtra(REQ_TYPE, REQ_PAY_SHOPPING_LIST);
+                intent.putExtra(PASSING_ID, shoppingList.getId());
+                startActivityForResult(intent, REQ_PAY_SHOPPING_LIST);
+            }
+        });
+
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQ_SHOPPING_LIST_ADD) {
             if (resultCode == getActivity().RESULT_OK) {
-
+                adapter.updateOnChangeShoppingList();
             } else if (resultCode == getActivity().RESULT_CANCELED) {
 
             }
-//        } else if (requestCode == REQ_SHOPPING_LIST_EDIT) {
-//            if (resultCode == getActivity().RESULT_OK) {
-//
-//            } else if (resultCode == getActivity().RESULT_CANCELED) {
-//
-//        }
+        }
+
+        if (requestCode == REQ_SHOPPING_LIST_EDIT) {
+            if (resultCode == getActivity().RESULT_OK) {
+                adapter.updateOnChangeShoppingList();
+            } else if (resultCode == getActivity().RESULT_CANCELED) {
+
+            }
         }
     }
 
@@ -118,7 +135,8 @@ public class MyShoppingListFragment extends Fragment implements View.OnClickList
             case R.id.fab:
                 Log.i("FAB CLICKED", "FAB CLICKED");
                 Intent intent = new Intent(getActivity(), AddShoppingListActivity.class);
-                startActivity(intent);
+                intent.putExtra(REQ_TYPE, REQ_SHOPPING_LIST_ADD);
+                startActivityForResult(intent, REQ_SHOPPING_LIST_ADD);
                 break;
         }
 

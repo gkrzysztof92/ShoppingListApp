@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.context = this.getApplicationContext();
-        databaseHelper = new DatabaseHelper(this.context);
         
         initialsise();
         
@@ -63,15 +62,14 @@ public class MainActivity extends AppCompatActivity {
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
-        toolbar.setTitle("Shopping List App");
-
+        toolbar.setTitle("Lista Zakupów");
 
     }
 
     private void prepareDataResource() {
 
-        addData(new MyShoppingListFragment(), "My Shopping Lists");
-        addData(new PaidShoppingListFragment(), "Paid Shopping Lists");
+        addData(new MyShoppingListFragment(), "Moje Listy Zakupów");
+        addData(new PaidShoppingListFragment(), "Zapłacone Listy Zakupów");
     }
 
     private void addData(Fragment fragment, String title) {
@@ -79,15 +77,5 @@ public class MainActivity extends AppCompatActivity {
         fragmentList.add(fragment);
         titleList.add(title);
     }
-
-    void showSnackBar() {
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Added shopping list", Snackbar.LENGTH_SHORT);
-        View snackBarlayout = snackbar.getView();
-        snackBarlayout.setBackgroundColor(Color.BLUE);
-        TextView txvMessage = (TextView) snackBarlayout.findViewById(R.id.snackbar_text);
-        txvMessage.setTextColor(Color.YELLOW);
-        snackbar.show();
-    }
-
 
 }

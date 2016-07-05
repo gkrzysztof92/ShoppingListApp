@@ -32,7 +32,8 @@ public class ProductServiceImpl implements ProductService {
         Product product;
         Cursor cursor;
 
-        cursor = db.query(ProductTable.TABLE_NAME, null, null, null, null, null, null);
+        cursor = db.query(ProductTable.TABLE_NAME, null, ProductTable.SHOPPING_LIST_ID_COLUMN + "=" + id,
+                null, null, null, null);
         cursor.moveToFirst();
         if (!cursor.isAfterLast()) {
             do {
@@ -59,11 +60,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void addProduct(int shoppingListId, String name) {
+    public void addProduct(int shoppingListId, Product product) {
 
         ContentValues values = new ContentValues();
+        values.put(ProductTable.ID_COLUMN, product.getId());
         values.put(ProductTable.SHOPPING_LIST_ID_COLUMN, shoppingListId);
-        values.put(ProductTable.PRODUCT_NAME_COLUMN, name);
+        values.put(ProductTable.PRODUCT_NAME_COLUMN, product.getProductName());
+        if (product.isBought()) {
+            values.put(ProductTable.IS_BOUGHT_COLUMN, "Y");
+        } else {
+            values.put(ProductTable.IS_BOUGHT_COLUMN, "N");
+        }
+        values.put(ProductTable.CREATION_DATE_COLUMN, product.getCreationDate());
+        values.put(ProductTable.QUANTITY_COLUMN, product.getQuantity());
+
         db.insert(ProductTable.TABLE_NAME, null, values);
 
     }
@@ -83,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Product product) {
 
-        db.delete(ProductTable.TABLE_NAME, ProductTable.ID_COLUMN + "=" + ProductTable.ID_COLUMN, null);
+        db.delete(ProductTable.TABLE_NAME, ProductTable.ID_COLUMN + "=" + product.getId(), null);
 
     }
 

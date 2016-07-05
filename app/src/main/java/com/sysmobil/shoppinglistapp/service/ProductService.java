@@ -16,7 +16,7 @@ public interface ProductService {
      */
     List<Product> getAllProducts(int id);
     Product getProductById(int id);
-    void addProduct(int shoppingListId, String name);
+    void addProduct(int shoppingListId, Product product);
     void updateProduct(Product product);
     void deleteProduct(Product product);
 }

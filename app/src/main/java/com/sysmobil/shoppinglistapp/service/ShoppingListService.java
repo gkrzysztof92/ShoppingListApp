@@ -11,7 +11,9 @@ public interface ShoppingListService {
 
     List<ShoppingList> getAllShoppingList();
     ShoppingList getShoppingListById(int id);
+    void addShoppingList(int id, ShoppingList shoppingList);
     void updateShoppingList(ShoppingList shoppingList);
     void deleteShoppingList(ShoppingList shoppingList);
+    int getNextFreeId();
 
 }

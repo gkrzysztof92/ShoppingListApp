@@ -18,6 +18,19 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ppli_check"
+                android:layout_gravity="center|center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -26,7 +39,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/pli_name"
+                android:id="@+id/ppli_name"
                 android:layout_margin="7dp"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
@@ -36,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="7dp"
-                android:id="@+id/pli_quantity"
+                android:id="@+id/ppli_quantity"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -46,29 +59,18 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="right|center">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/pli_product_edit"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="7dp"
-                android:contentDescription="delete_img"
-                android:src="@drawable/ic_mode_edit_black_24dp"
-                android:tint="@android:color/holo_blue_dark"/>
-
-            <ImageView
-                android:id="@+id/pli_product_delete"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="7dp"
-                android:contentDescription="delete_img"
-                android:src="@drawable/ic_delete_black_24dp"
-                android:tint="@android:color/holo_red_dark"/>
+                android:id="@+id/ppli_price"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:gravity="center|center_vertical"/>
 
         </LinearLayout>
-
 
     </LinearLayout>
 

@@ -62,6 +62,20 @@ public class ShoppingListServiceImpl implements ShoppingListService {
     }
 
     @Override
+    public void addShoppingList(int id, ShoppingList shoppingList) {
+        ContentValues values = new ContentValues();
+        values.put(ShoppingListTable.ID_COLUMN, id);
+        values.put(ShoppingListTable.LIST_NAME_COLUMN, shoppingList.getShoppingListName());
+        values.put(ShoppingListTable.CREATION_DATE_COLUMN, shoppingList.getCreationDate());
+        if (shoppingList.isPaid()) {
+            values.put(ShoppingListTable.IS_PAID_COLUMN, "Y");
+        } else {
+            values.put(ShoppingListTable.IS_PAID_COLUMN, "N");
+        }
+        db.insert(ShoppingListTable.TABLE_NAME, null, values);
+    }
+
+    @Override
     public void updateShoppingList(ShoppingList shoppingList) {
 
         ContentValues contentValues = prepareData(shoppingList);
@@ -81,6 +95,21 @@ public class ShoppingListServiceImpl implements ShoppingListService {
 
     }
 
+    @Override
+    public int getNextFreeId() {
+
+        Cursor cursor = db.query(ShoppingListTable.TABLE_NAME, new String[] {"MAX(ID)"}, null, null, null, null, null);
+        int id;
+        if (cursor != null) {
+            cursor.moveToFirst();
+            id = cursor.getInt(0);
+        } else {
+            id = 0;
+        }
+        return id;
+    }
+
+
     private ContentValues prepareData(ShoppingList shoppingList) {
 
         ContentValues values = new ContentValues();
@@ -96,8 +125,10 @@ public class ShoppingListServiceImpl implements ShoppingListService {
 
         shoppingList.setId(cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListTable.ID_COLUMN)));
         shoppingList.setCreationDate(cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListTable.CREATION_DATE_COLUMN)));
-        shoppingList.setIsPaid((cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListTable.IS_PAID_COLUMN))).
-                equals("Y") ? true : false);
+        if (cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListTable.IS_PAID_COLUMN)) != null) {
+            shoppingList.setIsPaid((cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListTable.IS_PAID_COLUMN))).
+                    equals("Y") ? true : false);
+        }
         shoppingList.setShoppingListName(cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListTable.LIST_NAME_COLUMN)));
         shoppingList.setPayment(cursor.getFloat(cursor.getColumnIndexOrThrow(ShoppingListTable.PAYMENT_COLUMN)));
 

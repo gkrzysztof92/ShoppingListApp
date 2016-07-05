@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.sysmobil.shoppinglistapp.app.AddShoppingListActivity"/>
+        <activity android:name="com.sysmobil.shoppinglistapp.app.PayShoppingListActivity"/>
     </application>
 
 </manifest>
