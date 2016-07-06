@@ -10,6 +10,7 @@ import java.util.List;
 public interface ShoppingListService {
 
     List<ShoppingList> getAllShoppingList();
+    List<ShoppingList> getAllPaidShoppingList();
     ShoppingList getShoppingListById(int id);
     void addShoppingList(int id, ShoppingList shoppingList);
     void updateShoppingList(ShoppingList shoppingList);

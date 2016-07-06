@@ -46,6 +46,27 @@ public class ShoppingListServiceImpl implements ShoppingListService {
     }
 
     @Override
+    public List<ShoppingList> getAllPaidShoppingList(){
+        List<ShoppingList> shoppingLists = new ArrayList<>();
+        ShoppingList shoppingList;
+        Cursor cursor;
+
+        cursor = db.query(ShoppingListTable.TABLE_NAME, null, null, null, null, null, null);
+        cursor.moveToFirst();
+        if (!cursor.isAfterLast()) {
+            do {
+                shoppingList = new ShoppingList();
+
+                prepareSendObject(shoppingList, cursor);
+                shoppingLists.add(shoppingList);
+            } while (cursor.moveToNext());
+        }
+
+        return shoppingLists;
+    }
+
+
+    @Override
     public ShoppingList getShoppingListById(int id) {
 
         ShoppingList shoppingList = new ShoppingList();
