@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.sysmobil.productlistapp.R;
 import com.sysmobil.shoppinglistapp.database.DatabaseHelper;
 import com.sysmobil.shoppinglistapp.listeners.ChangeShoppingListListener;
+import com.sysmobil.shoppinglistapp.model.Product;
 import com.sysmobil.shoppinglistapp.model.ShoppingList;
 import com.sysmobil.shoppinglistapp.service.ShoppingListService;
 import com.sysmobil.shoppinglistapp.service.concrete.ShoppingListServiceImpl;
@@ -40,9 +41,17 @@ public class PaidShoppingListrecyclerAdapter extends RecyclerView.Adapter<PaidSh
     }
 
     public void updateOnChangeShoppingList() {
-        this.shoppingListData = shoppingListService.getAllPaidShoppingList();
+
+        List<ShoppingList> paidShoppingList = new ArrayList<>();
+        for (ShoppingList sl : shoppingListService.getAllPaidShoppingList()) {
+            if (sl.getPayment() > 0 ) {
+                paidShoppingList.add(sl);
+            }
+        }
+        this.shoppingListData = paidShoppingList;
         notifyDataSetChanged();
     }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -64,26 +73,10 @@ public class PaidShoppingListrecyclerAdapter extends RecyclerView.Adapter<PaidSh
         return shoppingListData.size();
     }
 
-    public void removeItem(int position) {
-        shoppingListData.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, shoppingListData.size());
-    }
-
-    public void addItem(int position, ShoppingList shoppingList) {
-        shoppingListData.add(position, shoppingList);
-        notifyItemInserted(position);
-        notifyItemRangeChanged(position, shoppingListData.size());
-    }
-
-
-
-
-
 
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView title, price;
+        TextView title, price, date;
         ImageView deleteImage;
         int position;
         ShoppingList current;
@@ -93,6 +86,7 @@ public class PaidShoppingListrecyclerAdapter extends RecyclerView.Adapter<PaidSh
             this.title = (TextView) itemView.findViewById(R.id.shopping_list_name);
             this.price = (TextView) itemView.findViewById(R.id.shopping_list_price);
             this.deleteImage = (ImageView) itemView.findViewById(R.id.sli_list_delete);
+            this.date = (TextView) itemView.findViewById(R.id.shopping_list_creation_date);
         }
 
         public void setData(ShoppingList currentObj, int pos){
@@ -100,6 +94,7 @@ public class PaidShoppingListrecyclerAdapter extends RecyclerView.Adapter<PaidSh
             position = pos;
             title.setText(current.getShoppingListName());
             price.setText(String.valueOf(current.getPayment()));
+            date.setText(current.getCreationDate());
 
         }
         public void setListeners() {

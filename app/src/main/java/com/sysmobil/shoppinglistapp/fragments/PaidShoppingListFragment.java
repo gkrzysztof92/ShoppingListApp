@@ -23,14 +23,7 @@ import com.sysmobil.shoppinglistapp.service.concrete.ShoppingListServiceImpl;
 
 public class PaidShoppingListFragment extends Fragment{
 
-    final static String TAG = "MyShoppingListFragment";
-    public static final int REQ_SHOPPING_LIST_ADD = 102;
-    public static final int REQ_SHOPPING_LIST_EDIT = 103;
-    public static final int REQ_PAY_SHOPPING_LIST = 104;
-    public static final String REQ_TYPE = "REQ_TYPE";
-    public static final String PASSING_ID = "ID";
 
-    private FloatingActionButton floatingActionButton;
     RecyclerView recyclerView;
     PaidShoppingListrecyclerAdapter adapter;
     ShoppingListService shoppingListService;
@@ -38,6 +31,7 @@ public class PaidShoppingListFragment extends Fragment{
     public PaidShoppingListFragment() {
         Log.i("Fragment Check", "Fragment MyShoppingList Created");
     }
+
 
     @Nullable
     @Override
@@ -49,6 +43,12 @@ public class PaidShoppingListFragment extends Fragment{
         return view;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.updateOnChangeShoppingList();
+    }
 
     private void setUpRecyclerViewer(View view) {
 

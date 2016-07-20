@@ -53,6 +53,7 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.pay_shopping_list);
 
         toolbar = (Toolbar) findViewById(R.id.psl_toolbar);
+        toolbar.setTitle("Zapłać za zakupy");
         submitEditImmage = (ImageView) findViewById(R.id.psl_submitEditNote);
         shopingListName = (TextView) findViewById(R.id.psl_shoppingListName);
         shoppingListPrice = (TextView) findViewById(R.id.psl_shoppingListPrice);
@@ -72,6 +73,7 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
         }
 
         shoppingList = shoppingListService.getShoppingListById(shoppingListId);
+        System.out.println(shoppingList.getPayment());
         productList = productService.getAllProducts(shoppingListId);
         setUpRecyclerViewer(productList);
         SetListenersInAdapters();
@@ -127,6 +129,7 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
         this.shoppingListPrice.setText("Do zapłacenia: " + calculatePayment() + "zł");
         this.shoppingListCunter.setText("Produkty w koszyku: " + countPaidProducts() + "/" + productList.size() );
 
+
     }
 
     private int countPaidProducts() {
@@ -154,6 +157,7 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.psl_submitEditNote:
+                System.out.println(shoppingList.getPayment());
                 shoppingList.setPayment(calculatePayment());
                 shoppingList.setIsPaid(true);
                 shoppingListService.updateShoppingList(shoppingList);

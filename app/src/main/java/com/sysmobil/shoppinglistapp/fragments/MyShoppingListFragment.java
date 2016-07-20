@@ -80,6 +80,12 @@ public class MyShoppingListFragment extends Fragment implements View.OnClickList
         recyclerView.setItemAnimator(new DefaultItemAnimator());
      }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.updateOnChangeShoppingList();
+    }
+
     void setRecyclerViewerListeners() {
 
         adapter.setOnDeleteShoppingList(new ChangeShoppingListListener() {

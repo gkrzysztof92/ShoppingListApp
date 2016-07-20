@@ -68,7 +68,7 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
 
         getDialog().getWindow().setTitle("Add product");
 
-        microphoneButton1 = (CircleButton) view.findViewById(R.id.sap_mic);
+       // microphoneButton1 = (CircleButton) view.findViewById(R.id.sap_mic);
 
         productNameInput = (EditText) view.findViewById(R.id.sap__product_name);
         quantityInput = (EditText) view.findViewById(R.id.sap_input_quantity);
@@ -94,7 +94,7 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
 
     private boolean validateProductName() {
         if (productNameInput.getText().toString().trim().isEmpty()) {
-            productNameLayoutinput.setError("Nazwa produktu mui być podana!");
+            this.productNameLayoutinput.setError("Nazwa produktu mui być podana!");
             requestFocus(productNameLayoutinput);
             return false;
         } else {
@@ -138,7 +138,10 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
         switch (v.getId()) {
             case R.id.sap_add_product:
                 if (validateProductName() && validateQuantity()) {
-                    Product product = new Product();
+                    //Product product = new Product();
+                    if(product == null){
+                        product = new Product();
+                    }
                     product.setProductName(productNameInput.getText().toString());
                     product.setQuantity(Integer.parseInt(quantityInput.getText().toString()));
 
@@ -149,10 +152,10 @@ public class SimpleProductAddDialog extends DialogFragment implements View.OnCli
             case R.id.sap_dismiss:
                 getDialog().dismiss();
 
-            case R.id.sap_mic:
-                System.out.println("Voice input from sap");
-                //promptSpeechinput();
-                break;
+//            case R.id.sap_mic:
+//                System.out.println("Voice input from sap");
+//                //promptSpeechinput();
+//                break;
             default:
                 break;
         }

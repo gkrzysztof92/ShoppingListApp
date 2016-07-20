@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:inputType="number"
-        android:hint="Number of products" />
+        android:hint="Liczba produktów" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout

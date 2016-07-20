@@ -38,7 +38,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:id="@+id/shopping_list_creation_date"
-                android:text="25-05-2016"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="italic"/>

@@ -15,6 +15,7 @@
             android:id="@+id/asl_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:title="Dodaj listę zakupów"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
                 <ImageView

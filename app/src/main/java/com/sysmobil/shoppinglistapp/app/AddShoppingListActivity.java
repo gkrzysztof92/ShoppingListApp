@@ -82,7 +82,7 @@ public class AddShoppingListActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.add_shopping_list);
 
         toolbar = (Toolbar) findViewById(R.id.asl_toolbar);
-        setSupportActionBar(toolbar);
+        toolbar.setTitle("Dodaj listę zakupów");
 
         inputShoppingListName = (EditText) findViewById(R.id.asl_input_name);
         inputLayoutShoppingListName = (TextInputLayout) findViewById(R.id.asl_input_layout_name);

@@ -33,7 +33,7 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
         this.layoutInflater = LayoutInflater.from(context);
         shoppingListService = new ShoppingListServiceImpl(DatabaseHelper.getInstance(context));
         this.shoppingListData = new ArrayList<>();
-        this.shoppingListData = shoppingListService.getAllShoppingList();
+        this.shoppingListData = getNotPaidShoppingList(shoppingListService.getAllShoppingList());
     }
 
     public void setOnDeleteShoppingList(ChangeShoppingListListener onDeleteProduct) {
@@ -49,8 +49,20 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
     }
 
     public void updateOnChangeShoppingList() {
-        this.shoppingListData = shoppingListService.getAllShoppingList();
+        this.shoppingListData = getNotPaidShoppingList(shoppingListService.getAllShoppingList());
         notifyDataSetChanged();
+    }
+
+    public List<ShoppingList> getNotPaidShoppingList(List<ShoppingList> shoppingLists) {
+
+        List<ShoppingList> notPaidShoppingList = new ArrayList<>();
+        for (ShoppingList sl : shoppingListService.getAllPaidShoppingList()) {
+            if (sl.getPayment() == 0 ) {
+                notPaidShoppingList.add(sl);
+            }
+        }
+
+        return notPaidShoppingList;
     }
 
     @Override
@@ -74,17 +86,6 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
         return shoppingListData.size();
     }
 
-    public void removeItem(int position) {
-        shoppingListData.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, shoppingListData.size());
-    }
-
-    public void addItem(int position, ShoppingList shoppingList) {
-        shoppingListData.add(position, shoppingList);
-        notifyItemInserted(position);
-        notifyItemRangeChanged(position, shoppingListData.size());
-    }
 
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

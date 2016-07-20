@@ -54,23 +54,9 @@ public class PayProductViewRecyclerAdapter extends RecyclerView.Adapter<PayProdu
         return productList.size();
     }
 
-    public void removeItem(int position) {
-        productList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, productList.size());
-    }
-
     public void setEditProductListener(ChangeProductListener editProductListener) {
         this.editProductListener = editProductListener;
     }
-
-    public void addItem(Product product) {
-        int position = productList.size();
-        productList.add(position, product);
-        notifyItemInserted(position);
-        notifyItemRangeChanged(position, productList.size());
-    }
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

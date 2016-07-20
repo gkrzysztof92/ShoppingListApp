@@ -69,7 +69,7 @@ public class ExtendedProductAddDialog extends DialogFragment implements View.OnC
         getDialog().getWindow().setTitle("Add product");
 
         microphoneButton1 = (CircleButton) view.findViewById(R.id.eap_mic);
-
+        microphoneButton1.setOnClickListener(this);
         productNameInput = (EditText) view.findViewById(R.id.eap_product_name);
         quantityInput = (EditText) view.findViewById(R.id.eap_input_quantity);
         priceInput = (EditText) view.findViewById(R.id.eap_input_price) ;
@@ -153,7 +153,7 @@ public class ExtendedProductAddDialog extends DialogFragment implements View.OnC
 
             case R.id.eap_mic:
                 System.out.println("Voice input");
-                //promptSpeechinput();
+                promptSpeechinput();
                 break;
             default:
                 break;
