@@ -3,7 +3,7 @@ package com.sysmobil.shoppinglistapp.listeners;
 import com.sysmobil.shoppinglistapp.model.Product;
 
 /**
- * Created by krzgac on 2016-07-03.
+ * Interface representing action on change product state.
  */
 public interface ChangeProductListener {
     void onReturnValue(Product product);

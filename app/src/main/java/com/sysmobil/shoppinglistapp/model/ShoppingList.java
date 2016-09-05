@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by krzgac on 2016-05-16.
+ * Simple POJO Class. Represents Shopping List entity.
  */
 public class ShoppingList {
 

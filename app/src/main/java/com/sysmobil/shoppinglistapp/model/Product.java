@@ -3,7 +3,7 @@ package com.sysmobil.shoppinglistapp.model;
 import java.util.Date;
 
 /**
- * Created by krzgac on 2016-05-16.
+ * Simple POJO Class. Represents product entity.
  */
 public class Product {
 

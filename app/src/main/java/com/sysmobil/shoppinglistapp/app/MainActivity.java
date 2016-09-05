@@ -2,17 +2,13 @@ package com.sysmobil.shoppinglistapp.app;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.TextView;
 
 import com.sysmobil.productlistapp.R;
 import com.sysmobil.shoppinglistapp.adapters.TabsAdapter;
@@ -23,6 +19,9 @@ import com.sysmobil.shoppinglistapp.fragments.PaidShoppingListFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Main activity class.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.context = this.getApplicationContext();
         
-        initialsise();
+        init();
         
         prepareDataResource();
 
@@ -54,26 +53,32 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    private void initialsise() {
+    /**
+     * Initialize ui elements and layout
+     */
+    private void init() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-
         toolbar.setTitle("Lista Zakupów");
-
     }
 
+    /**
+     * Creating instance of fragment class
+     */
     private void prepareDataResource() {
-
         addData(new MyShoppingListFragment(), "Moje Listy Zakupów");
         addData(new PaidShoppingListFragment(), "Zapłacone Listy Zakupów");
     }
 
+    /**
+     * Adds fragments to fragment lists and titles of fragments to titles lists.
+     * @param fragment
+     * @param title
+     */
     private void addData(Fragment fragment, String title) {
-
         fragmentList.add(fragment);
         titleList.add(title);
     }

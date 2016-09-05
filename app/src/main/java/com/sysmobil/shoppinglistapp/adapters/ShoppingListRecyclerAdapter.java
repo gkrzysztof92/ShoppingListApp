@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by krzgac on 2016-06-04.
+ * Its Recycler Adapter for shopping list. Its Responsible for view shopping list in activities.
  */
 public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingListRecyclerAdapter.MyViewHolder> {
 
@@ -36,23 +36,43 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
         this.shoppingListData = getNotPaidShoppingList(shoppingListService.getAllShoppingList());
     }
 
+    /**
+     * Set listener on delete product action
+     * @param onDeleteProduct
+     */
     public void setOnDeleteShoppingList(ChangeShoppingListListener onDeleteProduct) {
         this.onDeleteShoppingList = onDeleteProduct;
     }
 
+    /**
+     * Set listener on edit shopping list action
+     * @param onEditProduct
+     */
     public void setOnEditShoppingList(ChangeShoppingListListener onEditProduct) {
         this.onEditShoppingList = onEditProduct;
     }
 
+    /**
+     * set listener on paid shopping list action
+     * @param onPayShoppingList
+     */
     public void setOnPayShoppingList(ChangeShoppingListListener onPayShoppingList) {
         this.onPayShoppingList = onPayShoppingList;
     }
 
+    /**
+     * Set listener on change state of shopping list
+     */
     public void updateOnChangeShoppingList() {
         this.shoppingListData = getNotPaidShoppingList(shoppingListService.getAllShoppingList());
         notifyDataSetChanged();
     }
 
+    /**
+     *  Returns no paid shopping list form all shopping list
+     * @param shoppingLists all shopping list
+     * @return  no paid shopping list
+     */
     public List<ShoppingList> getNotPaidShoppingList(List<ShoppingList> shoppingLists) {
 
         List<ShoppingList> notPaidShoppingList = new ArrayList<>();
@@ -86,7 +106,9 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
         return shoppingListData.size();
     }
 
-
+    /**
+     * Inner class represent holder for shopping list
+     */
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView title, creationDate;
@@ -103,6 +125,11 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
             this.payImage = (ImageView) itemView.findViewById(R.id.sli_pay);
         }
 
+        /**
+         * Sets Data in view holder
+         * @param currentObj Shopping list current object
+         * @param pos position in recycler viewer
+         */
         public void setData(ShoppingList currentObj, int pos) {
 
             current = currentObj;
@@ -111,6 +138,9 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<ShoppingLi
             creationDate.setText(current.getCreationDate());
         }
 
+        /**
+         * Sets user actions listeners
+         */
         public void setListeners() {
             editImage.setOnClickListener(this);
             deleteImage.setOnClickListener(this);

@@ -5,7 +5,7 @@ import android.text.TextWatcher;
 import android.view.View;
 
 /**
- * Created by krzgac on 2016-07-03.
+ * Simple implementation of TextWatcher Interface
  */
 public class MyTextWatcher implements TextWatcher {
 

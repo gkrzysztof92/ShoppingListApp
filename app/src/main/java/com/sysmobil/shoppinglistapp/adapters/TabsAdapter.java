@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.List;
 
 /**
- * Created by krzgac on 2016-06-02.
+ * Represents tab adapter.
  */
 public class TabsAdapter extends FragmentPagerAdapter {
 

@@ -30,7 +30,7 @@ import com.sysmobil.shoppinglistapp.service.concrete.ShoppingListServiceImpl;
 import java.util.List;
 
 /**
- * Created by krzgac on 2016-07-05.
+ * PayShoppingList Activity
  */
 public class PayShoppingListActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -80,6 +80,10 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
         setDataForTextViews();
     }
 
+    /**
+     * Set up RecyclerViewer for shopping lists
+     * @param shoppingLists list of Products
+     */
     private void setUpRecyclerViewer(List<Product> shoppingLists) {
 
         recyclerView = (RecyclerView) findViewById(R.id.psl_recycler_wiever);
@@ -94,6 +98,9 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
 
     }
 
+    /**
+     * Set up listeners for shopping list
+     */
     private void SetListenersInAdapters() {
 
         adapter.setEditProductListener(new ChangeProductListener() {
@@ -123,15 +130,19 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
 
     }
 
+    /**
+     * Set text fields
+     */
     private void setDataForTextViews() {
-
         this.shopingListName.setText(shoppingList.getShoppingListName());
         this.shoppingListPrice.setText("Do zapłacenia: " + calculatePayment() + "zł");
         this.shoppingListCunter.setText("Produkty w koszyku: " + countPaidProducts() + "/" + productList.size() );
-
-
     }
 
+    /**
+     * Count products paid on shopping lists
+     * @return returns number of paid products
+     */
     private int countPaidProducts() {
 
         int sum = 0;
@@ -144,6 +155,10 @@ public class PayShoppingListActivity extends AppCompatActivity implements View.O
         return  sum;
     }
 
+    /**
+     * Calculate payment for shopping list
+     * @return returns payment
+     */
     private float calculatePayment() {
 
         float sum = 0;

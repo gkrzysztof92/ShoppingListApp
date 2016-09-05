@@ -1,7 +1,7 @@
 package com.sysmobil.shoppinglistapp.database;
 
 /**
- * Created by krzgac on 2016-05-23.
+ *  Class represents fields of Shopping List table, and contains sql commends to create and drop table.
  */
 public class ShoppingListTable {
 

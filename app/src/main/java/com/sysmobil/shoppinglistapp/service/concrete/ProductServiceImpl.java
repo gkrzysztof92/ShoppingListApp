@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by krzgac on 2016-05-23.
+ * Class implements ProductService interface
  */
 public class ProductServiceImpl implements ProductService {
 
@@ -120,7 +120,11 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
-
+    /**
+     * Map database data to product class specified in param.
+     * @param product instance of product class
+     * @param cursor database cursor
+     */
     private void prepareSendObject(Product product, Cursor cursor) {
 
         product.setId(cursor.getInt(cursor.getColumnIndexOrThrow(ProductTable.ID_COLUMN)));
@@ -133,6 +137,11 @@ public class ProductServiceImpl implements ProductService {
         product.setProductShoppingListId(cursor.getInt(cursor.getColumnIndexOrThrow(ProductTable.SHOPPING_LIST_ID_COLUMN)));
     }
 
+    /**
+     * Prepares data to save in database.
+     * @param product
+     * @return
+     */
     private ContentValues prepareData(Product product) {
 
         ContentValues values = new ContentValues();

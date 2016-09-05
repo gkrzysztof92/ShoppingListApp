@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by krzgac on 2016-06-02.
+ *  My Shopping List Fragment Class. Is responsible for viewing shopping list created by user.
  */
 public class MyShoppingListFragment extends Fragment implements View.OnClickListener {
 
@@ -66,7 +66,10 @@ public class MyShoppingListFragment extends Fragment implements View.OnClickList
         return view;
     }
 
-
+    /**
+     *  Method set up Recycler Viewer for Shopping List Item.
+     * @param view
+     */
     private void setUpRecyclerViewer(View view) {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.mslRecyclerView);
@@ -86,6 +89,10 @@ public class MyShoppingListFragment extends Fragment implements View.OnClickList
         adapter.updateOnChangeShoppingList();
     }
 
+    /**
+     * Set up recycle viewer listeners. Is responsible for detecting interaction shopping
+     * list items with user.
+     */
     void setRecyclerViewerListeners() {
 
         adapter.setOnDeleteShoppingList(new ChangeShoppingListListener() {

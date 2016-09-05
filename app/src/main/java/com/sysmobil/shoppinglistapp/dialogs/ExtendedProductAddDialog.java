@@ -28,12 +28,12 @@ import java.util.Locale;
 import at.markushi.ui.CircleButton;
 
 /**
- * Created by krzgac on 2016-07-03.
+ * Class represents extended product dialog window. Is responsible for managing products.
  */
 public class ExtendedProductAddDialog extends DialogFragment implements View.OnClickListener {
 
     public static final int REQ_CODE_SPEECH_INPUT = 100;
-    public static final int RESULT_OK           = -1;
+    public static final int RESULT_OK = -1;
 
     private EditText productNameInput, quantityInput, priceInput;
     private TextInputLayout productNameLayoutinput, quantityLayoutInput, priceLayoutInput;
@@ -95,6 +95,10 @@ public class ExtendedProductAddDialog extends DialogFragment implements View.OnC
         return view;
     }
 
+    /**
+     * Validate data of products entered by the user.
+     * @return if data is valid returns true, else returns false
+     */
     private boolean validateProductName() {
         if (productNameInput.getText().toString().trim().isEmpty()) {
             productNameLayoutinput.setError("Nazwa produktu mui być podana!");
@@ -106,6 +110,10 @@ public class ExtendedProductAddDialog extends DialogFragment implements View.OnC
         return true;
     }
 
+    /**
+     *  Validate quantity of products entered by the user.
+     * @return true if quantity is number and is greater than 0, else returns false
+     */
     private boolean validateQuantity() {
         int quantity;
         try {
@@ -129,6 +137,10 @@ public class ExtendedProductAddDialog extends DialogFragment implements View.OnC
         return true;
     }
 
+    /**
+     * Focus the text imput.
+     * @param view
+     */
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -160,6 +172,9 @@ public class ExtendedProductAddDialog extends DialogFragment implements View.OnC
         }
     }
 
+    /**
+     * Open dialog for speech recognition, and capture the speech to text
+     */
     private void promptSpeechinput() {
 
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
